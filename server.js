@@ -6,40 +6,9 @@ const dotenv = require('dotenv').config({
 // Routes: Comics, Heroes, Auth, Users
 const app = express();
 
-app.get('/api/v1/comics', (req, res) => {
-  res.status(200).json({
-    success: true,
-    msg: 'Show all comics'
-  });
-})
+const comics = require('./routes/comics')
 
-app.get('/api/v1/comics/:id', (req, res) => {
-  res.status(200).json({
-    success: true,
-    msg: `Show comic ${req.params.id}`
-  })
-})
-
-app.post('/api/v1/comics', (req, res) => {
-  res.status(200).json({
-    success: true,
-    msg: `Add a new comic`
-  });
-})
-
-app.put('/api/v1/comics/:id', (req, res) => {
-  res.status(200).json({
-    success: true,
-    msg: `Update comic ${req.params.id}`
-  })
-})
-
-app.delete('/api/v1/comics/:id', (req, res) => {
-  res.status(200).json({
-    success: true,
-    msg: `Delete comic ${req.params.id}`
-  })
-})
+app.use('/api/v1/comics', comics)
 
 const PORT = process.env.PORT || 5000;
 
