@@ -6,6 +6,7 @@ const dotenv = require('dotenv').config({
 
 const comics = require('./routes/comics');
 const connectDB = require('./config/db');
+const errorHandler = require('./middleware/error');
 
 const app = express();
 app.use(express.json());
@@ -13,6 +14,7 @@ if (process.env.NODE_ENV === 'development') {
   app.use(morgan('dev'));
 }
 app.use('/api/v1/comics', comics);
+app.use(errorHandler);
 
 connectDB();
 
