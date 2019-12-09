@@ -9,6 +9,9 @@ const ComicSchema = new mongoose.Schema({
     type: String,
     required: [true, "Please enter a name"],
   },
+  slug: {
+    type: String,
+  },
   price: {
     type: String,
     required: [true, "Please enter a valid price"],
@@ -38,6 +41,7 @@ const ComicSchema = new mongoose.Schema({
   },
   updatedAt: {
     type: Date,
+    default: Date.now
   }
 })
 
