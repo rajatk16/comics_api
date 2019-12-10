@@ -1,10 +1,20 @@
-const errorHandler = (err, req, res, next) => {
-  // Log to console
-  console.log(err);
+const ErrorResponse = require('../utils/ErrorResponse');
 
-  res.status(500).json({
+const errorHandler = (err, req, res, next) => {
+  let error = {
+    ...err
+  }
+
+  error.message = err.message;
+
+  if (err.name === 'CastError') {
+    const message = `Comic with ${err.value} not found`
+    error = new ErrorResponse(message, 404);
+  }
+
+  res.status(error.statusCode || 500).json({
     success: false,
-    error: err.message
+    error: error.message || "Server Error"
   })
 }
 

@@ -12,9 +12,7 @@ exports.getComics = async (req, res, next) => {
       data: comics
     });
   } catch (error) {
-    res.status(400).json({
-      success: false
-    })
+    next(error);
   }
 }
 
@@ -36,12 +34,7 @@ exports.getComic = async (req, res, next) => {
       data: comic
     });
   } catch (error) {
-    next(
-      new ErrorResponse(
-        `Comic with id ${req.params.id} not found`,
-        404
-      )
-    )
+    next(error)
   }
 }
 
@@ -51,14 +44,19 @@ exports.getComic = async (req, res, next) => {
 exports.createComic = async (req, res, next) => {
   try {
     const comic = await Comic.create(req.body)
+    if (!comic) {
+      return next(
+        new ErrorResponse(
+          `Comic with id ${req.params.id} not found`
+        )
+      )
+    }
     res.status(200).json({
       success: true,
       msg: "Create new comic"
     })
   } catch (error) {
-    res.status(400).json({
-      success: false
-    })
+    next(error);
   }
 }
 
@@ -72,18 +70,18 @@ exports.updateComic = async (req, res, next) => {
       runValidators: true
     })
     if (!comic) {
-      return res.status(400).json({
-        success: false
-      })
+      return next(
+        new ErrorResponse(
+          `Comic with id ${req.params.id} not found`
+        )
+      )
     }
     res.status(200).json({
       success: true,
       data: comic
     })
   } catch (error) {
-    res.status(400).json({
-      success: false
-    })
+    next(error)
   }
 }
 
@@ -93,12 +91,17 @@ exports.updateComic = async (req, res, next) => {
 exports.deleteComic = async (req, res, next) => {
   try {
     const comic = await Comic.findByIdAndDelete(req.params.id);
+    if (!comic) {
+      return next(
+        new ErrorResponse(
+          `Comic with id ${req.params.id} not found`
+        )
+      )
+    }
     res.status(200).json({
       success: true
     })
-  } catch (err) {
-    res.status(400).json({
-      success: false,
-    })
+  } catch (error) {
+    next(error);
   }
 }
