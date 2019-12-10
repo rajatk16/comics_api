@@ -1,4 +1,5 @@
 const Comic = require('../models/Comic');
+const ErrorResponse = require('../utils/ErrorResponse');
 
 // @desc    get all comics
 // @route   GET /api/v1/comics
@@ -24,18 +25,23 @@ exports.getComic = async (req, res, next) => {
   try {
     const comic = await Comic.findById(req.params.id);
     if (!comic) {
-      return res.status(400).json({
-        success: false
-      })
+      return next(
+        new ErrorResponse(
+          `Comic with id ${req.params.id} not found`
+        )
+      )
     }
     res.status(200).json({
       success: true,
       data: comic
     });
   } catch (error) {
-    res.status(400).json({
-      success: false
-    })
+    next(
+      new ErrorResponse(
+        `Comic with id ${req.params.id} not found`,
+        404
+      )
+    )
   }
 }
 
