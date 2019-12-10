@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const slugify = require('slugify');
 
 const ComicSchema = new mongoose.Schema({
   cover: {
@@ -43,6 +44,13 @@ const ComicSchema = new mongoose.Schema({
     type: Date,
     default: Date.now
   }
+})
+
+ComicSchema.pre('save', function (next) {
+  this.slug = slugify(this.name, {
+    lower: true
+  });
+  next();
 })
 
 module.exports = mongoose.model("Comic", ComicSchema)
