@@ -6,7 +6,17 @@ const ErrorResponse = require('../utils/ErrorResponse');
 // @route   GET /api/v1/comics
 // @access  Public
 exports.getComics = asyncHandler(async (req, res, next) => {
-  const comics = await Comic.find();
+  let query;
+
+  let queryString = JSON.stringify(req.query);
+
+  queryString = queryString.replace(/\b(gt|gte|lt|lte|in)\b/g, match => {
+    return `$${match}`
+  });
+
+  query = Comic.find(JSON.parse(queryString));
+
+  const comics = await query;
   res.status(200).json({
     success: true,
     data: comics
