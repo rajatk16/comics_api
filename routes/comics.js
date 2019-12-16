@@ -4,6 +4,7 @@ const router = express.Router();
 const {
   getComics,
   getComic,
+  getComicHeroes,
   createComic,
   updateComic,
   deleteComic
@@ -12,6 +13,8 @@ const {
 router.get('/', getComics)
 
 router.get('/:id', getComic)
+
+router.get('/:id/heroes', getComicHeroes)
 
 router.post('/', createComic)
 

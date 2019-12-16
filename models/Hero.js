@@ -3,6 +3,7 @@ const mongoose = require('mongoose');
 const HeroSchema = new mongoose.Schema({
   name: {
     type: String,
+    unique: true,
     required: [true, "Please give your hero a name"],
   },
   intelligence: {
@@ -35,7 +36,7 @@ const HeroSchema = new mongoose.Schema({
   },
   aliases: {
     type: [String],
-    default: "None"
+    default: ["None"]
   },
   placeOfBirth: {
     type: String
@@ -52,6 +53,7 @@ const HeroSchema = new mongoose.Schema({
   },
   type: {
     type: String,
+    required: [true, "Please enter a character type"],
     enum: ['Hero', 'Villain', 'Anti-Hero', 'Other']
   },
   gender: {

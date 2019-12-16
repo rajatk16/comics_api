@@ -1,4 +1,5 @@
 const Comic = require('../models/Comic');
+const Hero = require('../models/Hero');
 const asyncHandler = require('../middleware/async');
 const ErrorResponse = require('../utils/ErrorResponse');
 
@@ -8,13 +9,13 @@ const ErrorResponse = require('../utils/ErrorResponse');
 exports.getComics = asyncHandler(async (req, res, next) => {
   let query;
 
-  const reqQuery = { ...req.query };
+  const reqQuery = {
+    ...req.query
+  };
 
   const removeFields = ['select', 'sort', 'page', 'limit'];
 
   removeFields.forEach(param => delete reqQuery[param]);
-
-  console.log(req.query);
 
   let queryString = JSON.stringify(reqQuery);
 
@@ -80,6 +81,30 @@ exports.getComic = asyncHandler(async (req, res, next) => {
     data: comic
   });
 });
+
+// @desc    GET HEROES of the COMIC
+// @route   GET /api/v1/comics/:id/heroes
+// @access  Public
+exports.getComicHeroes = asyncHandler(async (req, res, next) => {
+  const comic = await Comic.findById(req.params.id);
+  if (!comic) {
+    return next(
+      new ErrorResponse(
+        `Comic with id ${req.params.id} not found`
+      )
+    )
+  }
+
+  const heroes = await Hero.find({
+    name: comic.heroes
+  })
+
+  res.status(200).json({
+    success: true,
+    count: heroes.length,
+    data: heroes
+  })
+})
 
 // @desc Create New Comic
 // @route POST /api/v1/comics

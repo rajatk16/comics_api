@@ -12,6 +12,7 @@ const ComicSchema = new mongoose.Schema({
   },
   slug: {
     type: String,
+
   },
   price: {
     type: String,
@@ -26,8 +27,9 @@ const ComicSchema = new mongoose.Schema({
     required: [true, "Please enter a small description of the comic"]
   },
   heroes: {
-    type: [String],
+    type: [mongoose.Schema.Types.String],
     required: [true, "Please enter a hero name"],
+    ref: 'Hero'
   },
   releaseDate: {
     type: Date,

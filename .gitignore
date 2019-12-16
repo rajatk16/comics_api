@@ -1,5 +1,4 @@
 config/config.env
 node_modules/
 routes/auth.js
-routes/heroes.js
 routes/users.js
