@@ -2,7 +2,9 @@ const express = require('express');
 const {
   getHeroes,
   getHero,
-  postHero
+  postHero,
+  updateHero,
+  deleteHero
 } = require('../controllers/heroes');
 
 const router = express.Router({
@@ -11,6 +13,6 @@ const router = express.Router({
 
 router.route('/').get(getHeroes).post(postHero);
 
-router.route('/:name').get(getHero);
+router.route('/:id').get(getHero).put(updateHero).delete(deleteHero)
 
-module.exports = router
+module.exports = router;

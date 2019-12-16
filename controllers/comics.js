@@ -23,7 +23,7 @@ exports.getComics = asyncHandler(async (req, res, next) => {
     return `$${match}`;
   });
 
-  query = Comic.find(JSON.parse(queryString));
+  query = Comic.find(JSON.parse(queryString))
 
   if (req.query.select) {
     const fields = req.query.select.split(',').join(' ');

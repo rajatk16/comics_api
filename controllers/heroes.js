@@ -22,16 +22,14 @@ exports.getHeroes = asyncHandler(
 );
 
 //@desc   GET HERO with name
-//@route  GET /api/v1/heroes/:name
+//@route  GET /api/v1/heroes/:id
 //@access Public
 exports.getHero = asyncHandler(
   async (req, res, next) => {
-    const hero = await Hero.findOne({
-      name: req.params.name
-    })
+    const hero = await Hero.findById(req.params.id)
     if (!hero) {
       return next(
-        new ErrorResponse(`Hero with name ${req.params.name} not found`, 404)
+        new ErrorResponse(`Hero with id ${req.params.id} not found`, 404)
       )
     }
     res.status(200).json({
@@ -61,3 +59,35 @@ exports.postHero = asyncHandler(
     })
   }
 )
+
+exports.updateHero = asyncHandler(async (req, res, next) => {
+  const hero = await Hero.findByIdAndUpdate(req.params.id, req.body, {
+    new: true,
+    runValidators: true
+  });
+  if (!hero) {
+    return next(
+      new ErrorResponse(`Hero with id ${req.params.id} not found`, 404)
+    );
+  }
+  res.status(200).json({
+    success: true,
+    data: hero
+  });
+});
+
+exports.deleteHero = asyncHandler(async (req, res, next) => {
+  const hero = await Hero.findByIdAndRemove(req.params.id);
+  if (!hero) {
+    return next(
+      new ErrorResponse(
+        `Hero with id ${req.params.id} not found`,
+        404
+      )
+    )
+  }
+  res.status(200).json({
+    success: true,
+    data: hero
+  })
+})
